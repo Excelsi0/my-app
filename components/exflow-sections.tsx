@@ -1,5 +1,5 @@
 import type { RefObject } from "react";
-import type { RevenueResult } from "@/app/lib/revenue";
+import type { RevenueResult } from "@/lib/revenue";
 
 export type HistoryEntry = {
   id: string;

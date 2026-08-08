@@ -1,0 +1,86 @@
+{
+  "generated_at": "2026-08-08T20:00:46.861471+00:00",
+  "mode": "live",
+  "record_counts": {
+    "finance1": 0,
+    "finance2": 0
+  },
+  "summary": {
+    "CRITICAL": 3,
+    "HIGH": 0,
+    "MEDIUM": 0,
+    "LOW": 0,
+    "INFO": 0
+  },
+  "source_currencies": {
+    "finance1": [],
+    "finance2": []
+  },
+  "endpoints": [
+    {
+      "name": "finance1",
+      "url": "https://cpa-server-vtel.onrender.com/api/finance1",
+      "status": null,
+      "content_type": "",
+      "latency_ms": 1,
+      "payload_bytes": 0,
+      "error": "curl 6: curl: (6) Could not resolve host: cpa-server-vtel.onrender.com",
+      "mode": "live"
+    },
+    {
+      "name": "finance2",
+      "url": "https://cpa-server-vtel.onrender.com/api/finance2",
+      "status": null,
+      "content_type": "",
+      "latency_ms": 0,
+      "payload_bytes": 0,
+      "error": "curl 6: curl: (6) Could not resolve host: cpa-server-vtel.onrender.com",
+      "mode": "live"
+    },
+    {
+      "name": "rates",
+      "url": "https://api.currencyfreaks.com/v2.0/rates/latest?apikey=REDACTED",
+      "status": null,
+      "content_type": "",
+      "latency_ms": 0,
+      "payload_bytes": 0,
+      "error": "curl 6: curl: (6) Could not resolve host: api.currencyfreaks.com",
+      "mode": "live"
+    }
+  ],
+  "findings": [
+    {
+      "severity": "CRITICAL",
+      "code": "ENDPOINT_UNAVAILABLE",
+      "endpoint": "finance1",
+      "location": "$",
+      "problem": "Ответ невозможно проверить: curl 6: curl: (6) Could not resolve host: cpa-server-vtel.onrender.com",
+      "expected": "HTTP 2xx и корректный JSON.",
+      "recommendation": "Проверить доступность, авторизацию, status code и JSON-сериализацию ответа.",
+      "sample": "",
+      "heuristic": false
+    },
+    {
+      "severity": "CRITICAL",
+      "code": "ENDPOINT_UNAVAILABLE",
+      "endpoint": "finance2",
+      "location": "$",
+      "problem": "Ответ невозможно проверить: curl 6: curl: (6) Could not resolve host: cpa-server-vtel.onrender.com",
+      "expected": "HTTP 2xx и корректный JSON.",
+      "recommendation": "Проверить доступность, авторизацию, status code и JSON-сериализацию ответа.",
+      "sample": "",
+      "heuristic": false
+    },
+    {
+      "severity": "CRITICAL",
+      "code": "ENDPOINT_UNAVAILABLE",
+      "endpoint": "rates",
+      "location": "$",
+      "problem": "Ответ невозможно проверить: curl 6: curl: (6) Could not resolve host: api.currencyfreaks.com",
+      "expected": "HTTP 2xx и корректный JSON.",
+      "recommendation": "Проверить доступность, авторизацию, status code и JSON-сериализацию ответа.",
+      "sample": "",
+      "heuristic": false
+    }
+  ]
+}

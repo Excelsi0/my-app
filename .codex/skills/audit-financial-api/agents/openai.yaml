@@ -1,0 +1,4 @@
+interface:
+  display_name: "Аудит финансовых API"
+  short_description: "Проверяет ответы API и готовит отчёт"
+  default_prompt: "Используй $audit-financial-api для проверки текущих финансовых API и подготовки отчёта для backend-команды."

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   useCallback,
   useEffect,
@@ -11,7 +12,7 @@ import {
 import {
   calculateTotalRevenue,
   type RevenueResult,
-} from "@/app/lib/revenue";
+} from "@/lib/revenue";
 import {
   HistoryCard,
   LogsCard,
@@ -19,7 +20,7 @@ import {
   SourcesCard,
   type HistoryEntry,
   type LogEntry,
-} from "@/app/components/exflow-sections";
+} from "@/components/exflow-sections";
 
 type Mode = "live" | "demo";
 type LogTone = LogEntry["tone"];
@@ -367,7 +368,15 @@ export function ExflowDashboard() {
               </span>
             </span>
           </a>
-          <ConnectionStatus state={connectionState} label={loadingLabel} />
+          <div className="flex items-center gap-2">
+            <Link href="/sources" className="small-button">
+              <span className="hidden min-[430px]:inline">Источники</span>
+              <span className="min-[430px]:hidden" aria-hidden="true">
+                API
+              </span>
+            </Link>
+            <ConnectionStatus state={connectionState} label={loadingLabel} />
+          </div>
         </header>
 
         <main

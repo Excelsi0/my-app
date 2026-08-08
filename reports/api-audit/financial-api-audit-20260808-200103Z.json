@@ -1,0 +1,169 @@
+{
+  "generated_at": "2026-08-08T20:01:03.121885+00:00",
+  "mode": "live",
+  "record_counts": {
+    "finance1": 8,
+    "finance2": 9
+  },
+  "summary": {
+    "CRITICAL": 0,
+    "HIGH": 0,
+    "MEDIUM": 9,
+    "LOW": 0,
+    "INFO": 1
+  },
+  "source_currencies": {
+    "finance1": [
+      "EUR",
+      "USD"
+    ],
+    "finance2": [
+      "EUR",
+      "USD"
+    ]
+  },
+  "endpoints": [
+    {
+      "name": "finance1",
+      "url": "https://cpa-server-vtel.onrender.com/api/finance1",
+      "status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "latency_ms": 1244,
+      "payload_bytes": 465,
+      "error": null,
+      "mode": "live"
+    },
+    {
+      "name": "finance2",
+      "url": "https://cpa-server-vtel.onrender.com/api/finance2",
+      "status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "latency_ms": 1184,
+      "payload_bytes": 91,
+      "error": null,
+      "mode": "live"
+    },
+    {
+      "name": "rates",
+      "url": "https://api.currencyfreaks.com/v2.0/rates/latest?apikey=REDACTED",
+      "status": 200,
+      "content_type": "application/json",
+      "latency_ms": 1713,
+      "payload_bytes": 26251,
+      "error": null,
+      "mode": "live"
+    }
+  ],
+  "findings": [
+    {
+      "severity": "INFO",
+      "code": "RATE_NON_ISO_INSTRUMENTS_PRESENT",
+      "endpoint": "rates",
+      "location": "$.rates",
+      "problem": "Rates provider содержит 863 non-ISO instrument/crypto codes; они исключены из валютной проверки.",
+      "expected": "Это допустимо для универсального rates provider; финансовые источники должны использовать ISO 4217.",
+      "recommendation": "Не считать эти keys ошибкой. Проверять только валюты, фактически встречающиеся в finance1/finance2.",
+      "sample": "[\"$MICHI\", \"00\", \"0X0\"]",
+      "heuristic": false
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "FINANCE2_NON_CANONICAL",
+      "endpoint": "finance2",
+      "location": "$[0]",
+      "problem": "Формат неканонический: неверхний регистр валюты.",
+      "expected": "Один пробел, decimal point, положительная сумма, uppercase ISO code.",
+      "recommendation": "Нормализовать сериализацию или заменить строку на object schema.",
+      "sample": "300 usd",
+      "heuristic": false
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "FINANCE2_NON_CANONICAL",
+      "endpoint": "finance2",
+      "location": "$[1]",
+      "problem": "Формат неканонический: неверхний регистр валюты.",
+      "expected": "Один пробел, decimal point, положительная сумма, uppercase ISO code.",
+      "recommendation": "Нормализовать сериализацию или заменить строку на object schema.",
+      "sample": "200 eur",
+      "heuristic": false
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "FINANCE2_NON_CANONICAL",
+      "endpoint": "finance2",
+      "location": "$[2]",
+      "problem": "Формат неканонический: неверхний регистр валюты.",
+      "expected": "Один пробел, decimal point, положительная сумма, uppercase ISO code.",
+      "recommendation": "Нормализовать сериализацию или заменить строку на object schema.",
+      "sample": "150 usd",
+      "heuristic": false
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "FINANCE2_NON_CANONICAL",
+      "endpoint": "finance2",
+      "location": "$[3]",
+      "problem": "Формат неканонический: неверхний регистр валюты.",
+      "expected": "Один пробел, decimal point, положительная сумма, uppercase ISO code.",
+      "recommendation": "Нормализовать сериализацию или заменить строку на object schema.",
+      "sample": "200 usd",
+      "heuristic": false
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "FINANCE2_NON_CANONICAL",
+      "endpoint": "finance2",
+      "location": "$[4]",
+      "problem": "Формат неканонический: неверхний регистр валюты.",
+      "expected": "Один пробел, decimal point, положительная сумма, uppercase ISO code.",
+      "recommendation": "Нормализовать сериализацию или заменить строку на object schema.",
+      "sample": "450 eur",
+      "heuristic": false
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "FINANCE2_NON_CANONICAL",
+      "endpoint": "finance2",
+      "location": "$[5]",
+      "problem": "Формат неканонический: неверхний регистр валюты.",
+      "expected": "Один пробел, decimal point, положительная сумма, uppercase ISO code.",
+      "recommendation": "Нормализовать сериализацию или заменить строку на object schema.",
+      "sample": "400 usd",
+      "heuristic": false
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "FINANCE2_NON_CANONICAL",
+      "endpoint": "finance2",
+      "location": "$[6]",
+      "problem": "Формат неканонический: неверхний регистр валюты.",
+      "expected": "Один пробел, decimal point, положительная сумма, uppercase ISO code.",
+      "recommendation": "Нормализовать сериализацию или заменить строку на object schema.",
+      "sample": "670 usd",
+      "heuristic": false
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "FINANCE2_NON_CANONICAL",
+      "endpoint": "finance2",
+      "location": "$[7]",
+      "problem": "Формат неканонический: неверхний регистр валюты.",
+      "expected": "Один пробел, decimal point, положительная сумма, uppercase ISO code.",
+      "recommendation": "Нормализовать сериализацию или заменить строку на object schema.",
+      "sample": "190 usd",
+      "heuristic": false
+    },
+    {
+      "severity": "MEDIUM",
+      "code": "FINANCE2_NON_CANONICAL",
+      "endpoint": "finance2",
+      "location": "$[8]",
+      "problem": "Формат неканонический: неверхний регистр валюты.",
+      "expected": "Один пробел, decimal point, положительная сумма, uppercase ISO code.",
+      "recommendation": "Нормализовать сериализацию или заменить строку на object schema.",
+      "sample": "500 eur",
+      "heuristic": false
+    }
+  ]
+}

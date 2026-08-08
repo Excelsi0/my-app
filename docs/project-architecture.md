@@ -35,22 +35,27 @@ ExFlow — одностраничный русскоязычный финанс�
 ```text
 my-app/
 ├── .codex/
-│   └── rules/                   # Тематические инструкции для Codex
+│   ├── rules/                   # Тематические инструкции для Codex
+│   └── skills/
+│       └── audit-financial-api/ # Аудит live API и отчёты для backend
 ├── docs/
 │   └── project-architecture.md  # Этот документ
 ├── app/
 │   ├── api/
 │   │   └── exflow/
 │   │       └── route.ts         # Серверная live-агрегация
-│   ├── components/
-│   │   ├── exflow-dashboard.tsx # Клиентское состояние и действия
-│   │   └── exflow-sections.tsx  # Presentational-секции dashboard
-│   ├── lib/
-│   │   └── revenue.ts           # Чистая финансовая логика
 │   ├── favicon.ico
 │   ├── globals.css              # Глобальная тема и UI-стили
 │   ├── layout.tsx               # Root layout и metadata
-│   └── page.tsx                 # Главная страница
+│   ├── page.tsx                 # Главная страница
+│   └── sources/
+│       └── page.tsx             # Описание источников данных
+├── components/
+│   ├── data-sources-overview.tsx # Статическая страница источников
+│   ├── exflow-dashboard.tsx     # Клиентское состояние и действия
+│   └── exflow-sections.tsx      # Presentational-секции dashboard
+├── lib/
+│   └── revenue.ts               # Чистая финансовая логика
 ├── public/                      # Статические файлы
 ├── .env.example                 # Шаблон серверных env-переменных
 ├── AGENTS.md                    # Маршрутизатор проектных правил
@@ -71,15 +76,16 @@ my-app/
 
 ### 1. App Router shell
 
-Файлы: `app/layout.tsx`, `app/page.tsx`.
+Файлы: `app/layout.tsx`, `app/page.tsx`, `app/sources/page.tsx`.
 
 - `layout.tsx` задаёт корневой `<html>`, язык `ru`, metadata и глобальные стили.
 - `page.tsx` остаётся тонкой Server Component и монтирует основной dashboard.
+- `sources/page.tsx` задаёт metadata маршрута `/sources` и монтирует статическое описание источников данных.
 - В shell не размещаются финансовые вычисления, браузерное состояние или авторизованные внешние запросы.
 
 ### 2. Клиентская orchestration
 
-Файл: `app/components/exflow-dashboard.tsx`.
+Файл: `components/exflow-dashboard.tsx`.
 
 Главный Client Component отвечает за:
 
@@ -95,7 +101,7 @@ my-app/
 
 ### 3. Presentational UI
 
-Файл: `app/components/exflow-sections.tsx`.
+Файлы: `components/exflow-sections.tsx`, `components/data-sources-overview.tsx`.
 
 Секции получают подготовленные props и отображают:
 
@@ -106,6 +112,8 @@ my-app/
 - журнал процесса.
 
 В этом слое не должно быть сетевых запросов, чтения env или реализации конвертации валют.
+
+`data-sources-overview.tsx` статически описывает безопасные публичные сведения об интеграциях и этапах расчёта. Он не выполняет live-запросы и не содержит значений API-ключей.
 
 ### 4. Серверная интеграция
 
@@ -123,7 +131,7 @@ Route Handler является server-only границей между брау�
 
 ### 5. Доменная финансовая логика
 
-Файл: `app/lib/revenue.ts`.
+Файл: `lib/revenue.ts`.
 
 Слой содержит типы входов и результата, парсинг, нормализацию валют, конвертацию и подсчёт качества данных. `calculateTotalRevenue` является чистой и детерминированной функцией, поэтому одинаково используется live API и demo-режимом.
 
@@ -149,9 +157,10 @@ Route Handler является server-only границей между брау�
 ```mermaid
 flowchart LR
     Page[app/page.tsx<br/>Server Component] --> Dashboard[exflow-dashboard.tsx<br/>Client orchestration]
+    SourcesPage[app/sources/page.tsx<br/>Server Component] --> SourcesOverview[data-sources-overview.tsx<br/>Static source catalog]
     Dashboard --> Sections[exflow-sections.tsx<br/>Presentational UI]
     Dashboard -->|GET /api/exflow| Route[app/api/exflow/route.ts<br/>Server integration]
-    Dashboard -->|demo input| Revenue[app/lib/revenue.ts<br/>Pure domain logic]
+    Dashboard -->|demo input| Revenue[lib/revenue.ts<br/>Pure domain logic]
     Route --> Revenue
     Route --> Finance1[Finance API 1]
     Route --> Finance2[Finance API 2]
@@ -159,6 +168,7 @@ flowchart LR
     Dashboard --> Storage[(localStorage)]
     Styles[app/globals.css] --> Dashboard
     Styles --> Sections
+    Styles --> SourcesOverview
 ```
 
 Разрешённое направление зависимостей:
@@ -292,14 +302,15 @@ Dockerfile использует три стадии:
 
 | Новый код | Рекомендуемое место |
 | --- | --- |
-| Чистая финансовая функция или тип | `app/lib/` |
-| Новый browser-independent helper | `app/lib/`, если он относится к домену; иначе отдельный тематический `lib`-модуль |
+| Чистая финансовая функция или тип | Корневой `lib/` |
+| Новый browser-independent helper | Корневой `lib/`, если он относится к домену; иначе отдельный тематический `lib`-модуль |
 | Авторизованный внешний запрос | Server-only модуль или `app/api/**/route.ts` |
 | Новый HTTP endpoint | `app/api/<name>/route.ts` |
-| Интерактивное UI-поведение | Небольшой файл в `app/components/` с `"use client"` |
+| Интерактивное UI-поведение | Небольшой файл в корневом `components/` с `"use client"` |
 | Статическая секция интерфейса | Server или presentational component без client directive |
 | Общий визуальный примитив | `app/globals.css` в подходящем layer |
 | Документация архитектурного решения | `docs/` и ссылка из этого документа |
+| Проектный повторяемый workflow агента | `.codex/skills/<skill-name>/` |
 
 Не создавай новый слой только ради одного короткого helper. Выделяй модуль, когда у него появляется отдельная ответственность, независимая проверка или повторное использование.
 

@@ -17,7 +17,7 @@ Dashboard поддерживает:
 
 - Держи client boundary минимальной.
 - Отделяй orchestration состояния от простых presentational sections.
-- Не дублируй финансовую логику внутри JSX или effects; используй чистую функцию из `app/lib/revenue.ts`.
+- Не дублируй финансовую логику внутри JSX или effects; используй чистую функцию из `lib/revenue.ts`.
 - Очищай timers, animation frames и event listeners.
 - Сохраняй корректные disabled/loading/error состояния и предотвращай повторные действия во время загрузки.
 

@@ -1,3 +1,4 @@
+// Pure domain types and calculations shared by live and demo flows.
 export type SourceOne = {
   transactions?: Array<{
     type?: unknown;

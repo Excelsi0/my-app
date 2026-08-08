@@ -4,7 +4,7 @@ import {
   type ExchangeRates,
   type SourceOne,
   type SourceTwo,
-} from "@/app/lib/revenue";
+} from "@/lib/revenue";
 
 export const dynamic = "force-dynamic";
 

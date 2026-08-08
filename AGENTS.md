@@ -20,9 +20,10 @@
 | Любая задача | Всегда, включая анализ, ревью, документацию и изменение кода | [Контекст проекта](.codex/rules/project-context.md) |
 | Архитектура, структура проекта, новый модуль или слой, перемещение файлов, изменение потока данных | До архитектурного анализа, планирования или реализации | [Документация архитектуры](docs/project-architecture.md) и правила всех затронутых слоёв |
 | Next.js, React, TypeScript, маршруты, layouts/pages, Server/Client Components, кеширование, конфигурация, зависимости, Bun | До изменения framework-кода, конфигов, `package.json`, `bun.lock` или структуры `app/` | [Стек и Next.js](.codex/rules/stack-nextjs.md) |
-| Расчёт выручки, валюты, округление, входные форматы, `processed`, `skipped`, `warnings`, `sources` | При изменении `app/lib/revenue.ts`, формата финансовых данных или результата вычислений | [Финансовая логика](.codex/rules/revenue-domain.md) |
+| Расчёт выручки, валюты, округление, входные форматы, `processed`, `skipped`, `warnings`, `sources` | При изменении `lib/revenue.ts`, формата финансовых данных или результата вычислений | [Финансовая логика](.codex/rules/revenue-domain.md) |
 | API route, внешние запросы, ключи, env, ошибки, таймауты, HTTP-статусы, кеширование ответа | При изменении `app/api/**`, `.env.example`, серверных интеграций или контрактов API | [API и безопасность](.codex/rules/api-security.md) |
-| Компоненты, состояние React, live/demo, localStorage, clipboard, CSV, тексты интерфейса | При изменении `app/components/**` или клиентского поведения | [Клиент и интерфейс](.codex/rules/client-ui.md) |
+| Аудит текущих ответов финансовых API, проверка валют/регистра/схемы, отчёт для backend | При запросе диагностики live API или JSON-снимков | Использовать skill [`$audit-financial-api`](.codex/skills/audit-financial-api/SKILL.md), а также прочитать [API и безопасность](.codex/rules/api-security.md) и [финансовую логику](.codex/rules/revenue-domain.md) |
+| Компоненты, состояние React, live/demo, localStorage, clipboard, CSV, тексты интерфейса | При изменении `components/**` или клиентского поведения | [Клиент и интерфейс](.codex/rules/client-ui.md) |
 | CSS, Tailwind, адаптивность, анимации, визуальный стиль, accessibility | При изменении `app/globals.css`, разметки, UI-состояний или визуальных компонентов | [Клиент и интерфейс](.codex/rules/client-ui.md) |
 | README, Docker, запуск, развёртывание, команды, итоговая проверка | При изменении документации, окружения, сборки, деплоя или любых файлов проекта | [Проверки и поставка](.codex/rules/quality-delivery.md) |
 | Сквозная задача или рефакторинг нескольких слоёв | Когда меняются одновременно UI, API и/или расчёты | Все относящиеся к слоям правила плюс [проверки и поставка](.codex/rules/quality-delivery.md) |
@@ -32,6 +33,7 @@
 - Исправление формулы или парсинга: `project-context` → `revenue-domain` → `quality-delivery`.
 - Архитектурный анализ или изменение структуры: `project-context` → `docs/project-architecture.md` → правила затронутых слоёв → `quality-delivery`.
 - Изменение `/api/exflow`: `project-context` → `stack-nextjs` → `revenue-domain`, если меняется контракт расчёта → `api-security` → `quality-delivery`.
+- Аудит ответов API: `project-context` → `$audit-financial-api` → `api-security` → `revenue-domain`; при PDF также использовать PDF skill.
 - Изменение dashboard: `project-context` → `stack-nextjs` → `client-ui` → `quality-delivery`.
 - Изменение стилей: `project-context` → `client-ui` → `quality-delivery`.
 - Обновление зависимости или Next.js: `project-context` → `stack-nextjs` → `quality-delivery`.
